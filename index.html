@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KorwinGame</title>
+  <!-- <link rel="stylesheet" href="https://unpkg.com/tailwindcss@1.9.6/dist/tailwind.min.css"> -->
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css"> 
+  <style>
+    body > div {
+      border: 1px solid black;
+    }
+    @media (min-height: 800px) {
+      div[role="dialog"] {
+        position: absolute;
+        left: 50%;
+        top: 10%;
+        /* transform: translateX(-50%) translateY(-50%); */
+        min-height: 100vh;
+        transform: translateX(-50%);
+      }
+    #popup {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+    }
+    div[role="dialog"] {
+      min-width: 50vw;
+      min-height: 50vh;
+      background-color: white;
+      max-width: min(500px, 40vw);
+    }
+  </style>
+</head>
+<body>
+  <div role="dialog" id="menu">
+    <h1>Witaj w grze o Korwinie 👑</h1>
+    <img src="./korwingame.png" alt="Logo Korwin Game">
+
+    W tej grze wcielasz się w Korwina, a Twoim zadaniem jest założyć partię, przekazać ją dalej i zostać w niej (po raz kolejny) oszukany.
+
+    Powodzenia!
+
+    [Zacznij grę#goto(startinggame)]
+    <details open>
+      <summary>o ruchu drogowym</summary>
+      <blockquote>Celem ruchu drogowego nie jest bezpieczeństwo, tylko szybkość.</blockquote>
+    </details>
+    <!-- <details>
+      <summary>o demokracji</summary>
+      <blockquote>Jak może istnieć ustrój, w którym dwóch meneli spod budki ma dwa głosy, a profesor uniwersytetu ma jeden głos? Trzeba być idiotą, żeby chcieć w takim ustroju żyć.</blockquote>
+    </details> -->
+    <!-- <details>
+      <summary>o stałości w poglądach</summary>
+      <blockquote>Jeśli więc zauważycie Państwo, że w jakiejś wypowiedzi powołam się na „sprawiedliwość społeczną” lub zażądam „wyrównywania szans” – to proszę natychmiast przestać czytać moje blogi, i napisane po tej dacie artykuły – kontentując się tymi, które napisałem, gdy byłem jeszcze przy zdrowych zmysłach!</blockquote>
+    </details> -->
+    [pomoc 🛈#goto(pomoc)]
+  </div>
+  <!-- <div style="display: flex1; width: 120px;">[|27][|10][d:|1942]</div>-->
+    <!-- [łatwy] [średni] [trudny] [d:piekło] -->
+  <div role="dialog" id="startinggame">
+    <fieldset><legend>Poziom trudności</legend><label for=""><input type="radio" name="difficulty">łatwy</label>
+      <label for=""><input type="radio" name="difficulty" checked>średni</label>
+      <label for=""><input type="radio" name="difficulty">trudny</label>
+      <label for=""><input type="radio" name="difficulty">piekło</label>
+    </fieldset>
+    Konfiguracja postaci:
+    Imię i nazwisko: [|JKM]
+    Data urodzenia [|27][|10][d:|1942] <span title="zmiana daty minimalnie wpływa na parametry Korwina Króla"></span>
+
+    [Zagraj#goto(map)]
+  </div>
+  <div role="dialog" id="skilltree">
+    [wróć do mapy#goto(map)]
+    (tutaj będzie drzewko umiejętności)
+  </div>
+  <div role="dialog" id="map">
+    [pomoc#goto(pomoc)] [wyloguj#goto(menu)]
+    <div>
+      Dane postaci
+      <pre id="dane">
+      </pre>
+    </div>
+    [graj w brydża 🂡#skills.brydz=(skills.brydz||0)+1]
+    [graj w szachy ♔#skills.szachy=(skills.szachy||0)+1]
+    [załóż partię KORWiN ♛#partie.KORWiN={}#!partie.KORWiN&&!partie.NowaNadzieja&&!partie.none && skills.brydz>10 && skills.szachy>5]
+    [zmień KORWiN na Nowa Nadzieja#partie.KORWiN=undefined,partie.NowaNadzieja={}#partie.KORWiN]
+    [przekaż władzę Mentzenowi#partie.NowaNadzieja.prezes=texts.mentzen#partie.NowaNadzieja&&!partie.NowaNadzieja?.prezes]
+    [zostań zawieszony#partie.NowaNadzieja.zawieszony=true#partie.NowaNadzieja?.prezes&&!partie.NowaNadzieja?.zawieszony]
+    [zostań wyrzucony#partie.NowaNadzieja = undefined,partie.none=1,window.alert(texts.win)#partie.NowaNadzieja?.prezes]
+    [załóż nową partię#Object.assign(partie,newPartia()),(()=>{debugger})(),partie.none=1,window.g2(texts.wincmd)#partie.none]
+  </div>
+  <div role="dialog" id="send">
+    [wróć do mapy#goto(map)]
+    Masz materiał, który moglibyśmy wykorzystać? Wyślij go nam?<!-- <form action="">
+      Url <input type="text" name="url">
+      Opis <textarea name="desc" cols="30" rows="10"></textarea>
+    --><form action="https://api.staticforms.xyz/submit" method="post">
+      <input type="text" name="name" placeholder="Imię">
+      <input type="text" name="email" placeholder="Twój e-mail" />
+      <textarea name="message" placeholder="Opis. wskazówka: wysyłasz link do filmiku? wyślij go razem z znacznikiem czasowym"></textarea>
+      <input type="text" name="honeypot" style="display:none">
+      <input type="hidden" name="accessKey" value="f9541bbc-e831-4b99-96d0-36d6bc2fb391">
+      <input type="hidden" name="subject" value="Contact us from - korwingame.github.io" />
+      <input type="hidden" name="replyTo" value="@">
+      <input type="hidden" name="redirectTo" value="https://korwin-game.github.io/zagraj">
+      <input type="submit" value="Wyślij" />
+    </form>
+    <!-- dodaj zakładkę <span title="upuść na pasek zakładek i kliknij na stronie, na której znalazłeś interesującą treść">🛈</span> -->
+  </div>
+  <div role="dialog" id="win">
+    <h1>Wygrałeś</h1>
+    <p>Udało się założyć nową partię.</p>
+    <div>
+      <img src="./win.webp">
+    </div>
+    <p>Czas przygotować się do eurowyborów :-)</p>
+    [Zagraj od nowa#goto(menu)]
+  </div>
+  <div role="dialog" id="pomoc">
+    [wróć do mapy#goto(map)]
+    &help;
+  </div>
+  <div id="popup">
+    Masz dla nas jakąś ciekawą wypowiedź JKM lub coś ciekawego? Może jakiś pomysł na rozwój?
+    [Wyślij nam ten materiał#goto(send)]</div>
+  <script>
+    var texts = {
+      mentzen: 'Mentzen',
+      win: 'Sukces! Zostałeś wyrzucony z Nowej Nadzei! Zakamuflowani socjaliści kryją się wszędzie',
+      wincmd: 'goto(win)',
+    }
+    function newPartia() {
+      const name = prompt('Podaj nazwę nowej partii', '')
+      return {[name]: {}}
+    }
+    var skills = {
+      brydz: 0,
+      szachy: 0,
+    }
+    var partie = {}
+    var init = document.body.innerHTML;
+    function replace() {
+      document.body.innerHTML = init
+      const b = document.body
+      b.innerHTML = b.innerHTML.replace(/\[(.?)\]/g, (m,is) => `<input type=checkbox ${is?' checked':''}/>`)
+      b.innerHTML = b.innerHTML.replace(/\[(d\:)?\|(.*?)\]/g, (m, dis, val) => `<input ${dis?' disabled':''} value="${val}"/>`)
+      b.innerHTML = b.innerHTML.replace(/\[_?(.+?)_?]/g, (m,name) => {
+        const condSrc = name.split('#')[2]?.replace(/&amp;/g, '&').replace(/&gt;/g, '>')
+        if (condSrc) {
+          const ret = eval(condSrc)
+          console.log('evaluating', ret, 'src:', condSrc)
+          if (!ret) return '';
+        }
+        return `<button onclick="goto('${name.split('#')[1] || ''}')">${name.split('#')[0]}</button>`
+      });
+      // b.innerHTML = b.innerHTML.replace(/\n/gm, '<br/>')
+      [...document.querySelectorAll('body > div')].map(b => b.innerHTML = b.innerHTML.replace(/\n/gm, '<br/>'));
+    }
+    replace()
+    goto(location.hash.substr(1) || goto('goto(menu)'))
+
+    document.addEventListener('click', ev => {
+      const el = ev.target
+      const d = el.closest('div[role="dialog"]')
+      if (el.textContent.indexOf('close') !== -1 && d) {
+        d.style.display = 'none'
+      }
+      if (el.closest('#send')) return;
+      if(el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') {
+        replace()
+        goto(location.hash.substr(1) || goto('goto(menu)'))
+      }
+      updateSkills()
+    })
+    function updateSkills() {
+      window.dane.innerHTML = JSON.stringify({skills, partie}, null, 2)
+    }
+    setInterval(() => {
+      updateSkills()
+    }, 200)
+    window.g2 = goto;
+    function goto(id) {
+      if (!id) return;
+      if (id.indexOf('goto') == -1) {
+        const src = id.replace('goto', '')
+        eval(src);
+        return;
+      }
+      if (id.indexOf('goto') !== -1) {
+        id = id.match(/goto\(([^\)]+)\)/)[1]
+      }
+      const ids = {
+        menu,
+        map,
+        // zaloga,
+        send,
+        startinggame,
+        // customconf,
+        // partie,
+        skilltree,
+        pomoc,
+        win,
+      };
+      location.hash = `goto(${id})`
+      console.log(`stating...${id}`)
+      Object.entries(ids).map(([,e]) => {
+        console.info('  ', e)
+        e.style.display = 'none'
+      });
+      const el = (ids[id] || Object.entries(ids).find(([k, v]) => k == id))
+      if (el) {
+        el.style.display = 'block'
+      }
+    }
+  </script>
+</body>
+</html>
