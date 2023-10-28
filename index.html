@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KorwinGame</title>
-  <!-- <link rel="stylesheet" href="https://unpkg.com/tailwindcss@1.9.6/dist/tailwind.min.css"> -->
   <link rel="stylesheet" href="https://unpkg.com/mvp.css"> 
   <style>
     body > div {
@@ -47,18 +46,8 @@
       <summary>o ruchu drogowym</summary>
       <blockquote>Celem ruchu drogowego nie jest bezpieczeństwo, tylko szybkość.</blockquote>
     </details>
-    <!-- <details>
-      <summary>o demokracji</summary>
-      <blockquote>Jak może istnieć ustrój, w którym dwóch meneli spod budki ma dwa głosy, a profesor uniwersytetu ma jeden głos? Trzeba być idiotą, żeby chcieć w takim ustroju żyć.</blockquote>
-    </details> -->
-    <!-- <details>
-      <summary>o stałości w poglądach</summary>
-      <blockquote>Jeśli więc zauważycie Państwo, że w jakiejś wypowiedzi powołam się na „sprawiedliwość społeczną” lub zażądam „wyrównywania szans” – to proszę natychmiast przestać czytać moje blogi, i napisane po tej dacie artykuły – kontentując się tymi, które napisałem, gdy byłem jeszcze przy zdrowych zmysłach!</blockquote>
-    </details> -->
     [pomoc 🛈#goto(pomoc)]
   </div>
-  <!-- <div style="display: flex1; width: 120px;">[|27][|10][d:|1942]</div>-->
-    <!-- [łatwy] [średni] [trudny] [d:piekło] -->
   <div role="dialog" id="startinggame">
     <fieldset><legend>Poziom trudności</legend><label for=""><input type="radio" name="difficulty">łatwy</label>
       <label for=""><input type="radio" name="difficulty" checked>średni</label>
@@ -155,7 +144,6 @@
         }
         return `<button onclick="goto('${name.split('#')[1] || ''}')">${name.split('#')[0]}</button>`
       });
-      // b.innerHTML = b.innerHTML.replace(/\n/gm, '<br/>')
       [...document.querySelectorAll('body > div')].map(b => b.innerHTML = b.innerHTML.replace(/\n/gm, '<br/>'));
     }
     replace()
@@ -194,11 +182,8 @@
       const ids = {
         menu,
         map,
-        // zaloga,
         send,
         startinggame,
-        // customconf,
-        // partie,
         skilltree,
         pomoc,
         win,
@@ -215,5 +200,6 @@
       }
     }
   </script>
+  <script async data-id="101431836" src="//static.getclicky.com/js"></script>
 </body>
 </html>
